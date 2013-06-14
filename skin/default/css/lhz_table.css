@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* CSS Document */
+#tbShow-box{ width: 1200px; height:300px; border:1px #003399 solid;}
+#tbShow-box #tb-data-show ul{ clear:both;}
+#tbShow-box #tb-data-show ul li{ float:left;}
+
+#tb-data-show table{ width:100%;}
+#tb-data-show td{ border:1px #CCCCCC solid;}
+
+
