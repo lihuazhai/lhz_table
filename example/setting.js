@@ -1,254 +1,257 @@
 var setting = {
-"selectOption" : [{
-	"id" : "tracker_id",
-	"name" : "ÀàÐÍ"
-}, {
-	"id" : "priority_id",
-	"name" : "ÓÅÏÈ¼¶"
-}, {
-	"id" : "assigned_to_id",
-	"name" : "·ÖÅä¸ø"
-}],
+	"selectOption" : [{
+		"id" : "tracker_id",
+		"name" : "ï¿½ï¿½ï¿½ï¿½"
+	}, {
+		"id" : "priority_id",
+		"name" : "ï¿½ï¿½ï¿½È¼ï¿½"
+	}, {
+		"id" : "assigned_to_id",
+		"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½"
+	}],
 
-"filterData" : {           
-	"defaulted" : {
-		"tracker_id_1" : {
-			"leftParentheses" : true,
-			"defaultCondition" : "=",
-			"defaultOption" : "Ä¬ÈÏÖµ-ÀàÐÍ_1",
-			"rightParentheses" : true,
-			"andor" : "and"
-		},"priority_id_6" : {
-			"leftParentheses" : false,
-			"defaultCondition" : "!",
-			"defaultOption" : "Ä¬ÈÏÖµ-ÓÅÏÈ¼¶",
-			"rightParentheses" : false,
-			"andor" : "or"
-		},"tracker_id_3" : {
-			"leftParentheses" : true,
-			"defaultCondition" : "=",
-			"defaultOption" : "Ä¬ÈÏÖµ-ÀàÐÍ_3",
-			"rightParentheses" : true,
-			"andor" : "and"
-		}},
-	
-	"selection" : {
-		"tracker_id" : {
-			"name" : "ÀàÐÍ",
-			"condition" : [{
-				"id" : "2",
-				"value" : "=",
-				"name" : "µÈÓÚ",
-				'hasOption' : '1'
-			}, {
-				"id" : "3",
-				"value" : "!",
-				"name" : "²»µÈÓÚ",
-				'hasOption' : '0'
-			}, {
-				"id" : "1",
-				"value" : "all",
-				"name" : "È«²¿",
-				'hasOption' : '1'
-			}],
-			"defaultCondition" : "!",
-			"type" : "text",
-			"defaultOption" : "2",
-			"defalutName" : ""
+	"filterData" : {
+		"defaulted" : {
+			"tracker_id_1" : {
+				"leftParentheses" : true,
+				"defaultCondition" : "=",
+				"defaultOption" : "Ä¬ï¿½ï¿½Öµ-ï¿½ï¿½ï¿½ï¿½_1",
+				"rightParentheses" : true,
+				"andor" : "and"
+			},
+			"priority_id_6" : {
+				"leftParentheses" : false,
+				"defaultCondition" : "!",
+				"defaultOption" : "Ä¬ï¿½ï¿½Öµ-ï¿½ï¿½ï¿½È¼ï¿½",
+				"rightParentheses" : false,
+				"andor" : "or"
+			},
+			"tracker_id_3" : {
+				"leftParentheses" : true,
+				"defaultCondition" : "=",
+				"defaultOption" : "Ä¬ï¿½ï¿½Öµ-ï¿½ï¿½ï¿½ï¿½_3",
+				"rightParentheses" : true,
+				"andor" : "and"
+			}
 		},
-		"priority_id" : {
-			"name" : "ÓÅÏÈ¼¶",
-			"condition" : [{
-				"id" : "2",
-				"value" : "=",
-				"name" : "µÈÓÚ",
-				"hasOption" : "1"
-			}, {
-				"id" : "3",
-				"value" : "!",
-				"name" : "²»µÈÓÚ",
-				'hasOption' : '1'
-			}, {
-				"id" : "1",
-				"value" : "all",
-				"name" : "È«²¿",
-				"hasOption" : "1"
-			}],
-			"defaultCondition" : "all",
-			"type" : "select",
-			"option" : [{
-				"id" : "123",
-				"value" : "low",
-				"name" : "µÍ"
-			}, {
-				"id" : "124",
-				"value" : "general",
-				"name" : "ÆÕÍ¨"
-			}, {
-				"id" : "123",
-				"value" : "hight",
-				"name" : "hight"
-			}, {
-				"id" : "123",
-				"value" : "urgent",
-				"name" : "½ô¼±"
-			}],
-			"defaultOption" : "low"
-		},
-		"assigned_to_id" : {
-			"name" : "·ÖÅä¸ø",
-			"condition" : [{
-				"id" : "2",
-				"value" : "=",
-				"name" : "µÈÓÚ",
-				"hasOption" : "1"
-			}, {
-				"id" : "5",
-				"value" : "!",
-				"name" : "²»µÈÓÚ",
-				"hasOption" : "1"
-			}, {
-				"id" : "3",
-				"value" : "none",
-				"name" : "ÎÞ",
-				"hasOption" : "0"
-			}, {
-				"id" : "1",
-				"value" : "6",
-				"name" : "È«²¿",
-				"hasOption" : "1"
-			}],
-			"defaultCondition" : "=",
-			"type" : "date",
-			"defaultOption" : "ÎÄ±¾Öµ"
+
+		"selection" : {
+			"tracker_id" : {
+				"name" : "ï¿½ï¿½ï¿½ï¿½",
+				"condition" : [{
+					"id" : "2",
+					"value" : "=",
+					"name" : "ï¿½ï¿½ï¿½ï¿½",
+					'hasOption' : '1'
+				}, {
+					"id" : "3",
+					"value" : "!",
+					"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+					'hasOption' : '0'
+				}, {
+					"id" : "1",
+					"value" : "all",
+					"name" : "È«ï¿½ï¿½",
+					'hasOption' : '1'
+				}],
+				"defaultCondition" : "!",
+				"type" : "text",
+				"defaultOption" : "2",
+				"defalutName" : ""
+			},
+			"priority_id" : {
+				"name" : "ï¿½ï¿½ï¿½È¼ï¿½",
+				"condition" : [{
+					"id" : "2",
+					"value" : "=",
+					"name" : "ï¿½ï¿½ï¿½ï¿½",
+					"hasOption" : "1"
+				}, {
+					"id" : "3",
+					"value" : "!",
+					"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+					'hasOption' : '1'
+				}, {
+					"id" : "1",
+					"value" : "all",
+					"name" : "È«ï¿½ï¿½",
+					"hasOption" : "1"
+				}],
+				"defaultCondition" : "all",
+				"type" : "select",
+				"option" : [{
+					"id" : "123",
+					"value" : "low",
+					"name" : "ï¿½ï¿½"
+				}, {
+					"id" : "124",
+					"value" : "general",
+					"name" : "ï¿½ï¿½Í¨"
+				}, {
+					"id" : "123",
+					"value" : "hight",
+					"name" : "hight"
+				}, {
+					"id" : "123",
+					"value" : "urgent",
+					"name" : "ï¿½ï¿½ï¿½ï¿½"
+				}],
+				"defaultOption" : "low"
+			},
+			"assigned_to_id" : {
+				"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½",
+				"condition" : [{
+					"id" : "2",
+					"value" : "=",
+					"name" : "ï¿½ï¿½ï¿½ï¿½",
+					"hasOption" : "1"
+				}, {
+					"id" : "5",
+					"value" : "!",
+					"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+					"hasOption" : "1"
+				}, {
+					"id" : "3",
+					"value" : "none",
+					"name" : "ï¿½ï¿½",
+					"hasOption" : "0"
+				}, {
+					"id" : "1",
+					"value" : "6",
+					"name" : "È«ï¿½ï¿½",
+					"hasOption" : "1"
+				}],
+				"defaultCondition" : "=",
+				"type" : "date",
+				"defaultOption" : "ï¿½Ä±ï¿½Öµ"
+			}
 		}
-	}
-},
+	},
 
-"row" : {
-	"id" : {
-		"name" : "id",
-		"show" : true,
-		"edit": true,
-		"links": false,
-		"type": "text",
-		"width" : "3%"
-	},
-	"title" : {
-		"name" : "±êÌâ",
-		"show" : true,
-		"links": true,
-		"edit": "1",
-		"type": "text",
-		"width" : "15%"
-	},
-	"description" : {
-		"name" : "ÃèÊö",
-		"show" : true,
-		"links": true,
-		"edit": true,
-		"type": "text",
-		"width" : ""
-	},
-	"subject" : {
-		"name" : "ËùÊôÏîÄ¿",
-		"show" : true,
-		"links": false,
-		"edit": true,
-		"type": "text",
-		"width" : ""
-	},
-	"assignee" : {
-		"name" : "¸ºÔðÈË",
-		"show" : true,
-		"links": true,
-		"edit": true,
-		"type": "text",
-		"width" : ""
-	},
-	"priority" : {
-		"name" : "ÓÅÏÈ¼¶",
-		"show" : true,
-		"edit": true,
-		"links": false,
-		"type": "select",
-		"options": {
-			"P7": "P7",
-			"p8": "p8"
+	"row" : {
+		"id" : {
+			"name" : "id",
+			"show" : true,
+			"edit" : true,
+			"links" : false,
+			"type" : "text",
+			"width" : "3%"
 		},
-		"width" : "5%"
+		"title" : {
+			"name" : "ï¿½ï¿½ï¿½ï¿½",
+			"show" : true,
+			"links" : true,
+			"edit" : "1",
+			"type" : "text",
+			"width" : "15%"
+		},
+		"description" : {
+			"name" : "ï¿½ï¿½ï¿½ï¿½",
+			"show" : true,
+			"links" : true,
+			"edit" : true,
+			"type" : "text",
+			"width" : ""
+		},
+		"subject" : {
+			"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿",
+			"show" : true,
+			"links" : false,
+			"edit" : true,
+			"type" : "text",
+			"width" : ""
+		},
+		"assignee" : {
+			"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+			"show" : true,
+			"links" : true,
+			"edit" : true,
+			"type" : "text",
+			"width" : ""
+		},
+		"priority" : {
+			"name" : "ï¿½ï¿½ï¿½È¼ï¿½",
+			"show" : true,
+			"edit" : true,
+			"links" : false,
+			"type" : "select",
+			"options" : {
+				"P7" : "P7",
+				"p8" : "p8"
+			},
+			"width" : "5%"
+		},
+		"status" : {
+			"name" : "×´Ì¬",
+			"show" : true,
+			"edit" : true,
+			"links" : false,
+			"type" : "select",
+			"options" : {
+				"completed" : "ï¿½Ñ½ï¿½ï¿½",
+				"complete" : "ï¿½ï¿½Í£ï¿½ï¿½"
+			},
+			"width" : "5%"
+		},
+		"startDate" : {
+			"name" : "ï¿½ï¿½Ê¼Ê±ï¿½ï¿½",
+			"show" : true,
+			"links" : false,
+			"edit" : true,
+			"type" : "date",
+			"width" : "8%"
+		},
+		"endDate" : {
+			"name" : "ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½",
+			"show" : true,
+			"links" : false,
+			"edit" : true,
+			"type" : "date",
+			"width" : "8%"
+		},
+		"percent" : {
+			"name" : "ï¿½ï¿½É°Ù·Ö±ï¿½(%)",
+			"show" : true,
+			"links" : false,
+			"edit" : true,
+			"type" : "percent",
+			"options" : {
+				"20%" : "20%",
+				"30%" : "30%",
+				"60%" : "60%"
+			},
+			"width" : "6%"
+		}
 	},
-	"status" : {
+
+	"group" : [{
+		"id" : "status",
 		"name" : "×´Ì¬",
-		"show" : true,
-		"edit": true,
-		"links": false,
-		"type": "select",
-		"options": {
-			"completed": "ÒÑ½â¾ö",
-			"complete": "ÔÝÍ£ÖÐ"
-		},
-		"width" : "5%"
-	},
-	"startDate" : {
-		"name" : "¿ªÊ¼Ê±¼ä",
-		"show" : true,
-		"links": false,
-		"edit": true,
-		"type": "date",
-		"width" : "8%"
-	},
-	"endDate" : {
-		"name" : "½áÊøÊ±¼ä",
-		"show" : true,
-		"links": false,
-		"edit": true,
-		"type": "date",
-		"width" : "8%"
-	},
-	"percent" : {
-		"name" : "Íê³É°Ù·Ö±È(%)",
-		"show" : true,
-		"links": false,
-		"edit": true,
-		"type": "percent",
-		"options": {
-			"20%": "20%",
-			"30%": "30%",
-			"60%": "60%"
-		},
-		"width" : "6%"
-	}
-},
-
-"group" : [{
-	"id" : "status",
-	"name" : "×´Ì¬",
-	"selected" : "0"
-}, {
-	"id" : "title",
-	"name" : "±êÌâ",
-	"selected" : "0"
-}, {
-	"id" : "assigned_to",
-	"name" : "Ö¸ÅÉ¸ø",
-	"selected" : "0"
-}, {
-	"id" : "updated_on",
-	"name" : "¸üÐÂÓÚ",
-	"selected" : "0"
-}, {
-	"id" : "fixed_version",
-	"name" : "Ä¿±ê°æ±¾",
-	"selected" : "0"
-}, {
-	"id" : "startDate",
-	"name" : "Íê³ÉÈÕÆÚ",
-	"selected" : "0"
-}, {
-	"id" : "endDate",
-	"name" : "½áÊøÊ±¼ä",
-	"selected" : "0"
-}]
+		"selected" : "0"
+	}, {
+		"id" : "title",
+		"name" : "ï¿½ï¿½ï¿½ï¿½",
+		"selected" : "0"
+	}, {
+		"id" : "assigned_to",
+		"name" : "Ö¸ï¿½É¸ï¿½",
+		"selected" : "0"
+	}, {
+		"id" : "updated_on",
+		"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+		"selected" : "0"
+	}, {
+		"id" : "fixed_version",
+		"name" : "Ä¿ï¿½ï¿½æ±¾",
+		"selected" : "0"
+	}, {
+		"id" : "startDate",
+		"name" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+		"selected" : "0"
+	}, {
+		"id" : "endDate",
+		"name" : "ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½",
+		"selected" : "0"
+	}]
 
 }
