@@ -79,7 +79,7 @@
 				//var responseJsonData = eval('('+data+')');//response.responseText是Ajax的返回值
 				//alert(responseJsonData);//这行是对的，打印结果是：[object object],说明已经json数组已经转化为json对象了				
 				var jsonData = sortData(data);	
-				alertTest(jsonData);			
+				//alertTest(jsonData);			
 				dataHtml = showData(jsonData);
 			}, "json");
 		} else {
@@ -102,22 +102,55 @@
 
 		return dataHtml;
 	};
-
+	
+	Array.prototype.in_array = function(e)  {  
+		for(i=0;i<this.length;i++)  {  
+			if(this[i] == e)  
+			return true;  
+		}  
+		return false;  
+	}
+	
 	//数据排序
 	function sortData(data) {
-		data.sort();//先按id排序
+		data.reverse();//先按id排序
 		var afterSort = new Array();
-		afterSort.push(data[0]);
-		 
-		var l = data.length - 1;
-		for(var i=0;i<l;i++){
-			var lastNextField= afterSort[""+afterSort.length-1+""].data.next; 
-			var index = lastNextField -1;//数组是以0开始的,因此要减去1
-		    var nextTask = data[""+index+""];//注意兼容性问题
-		    afterSort.push(nextTask);						
-		}
+		
+		for(var i=0;i<data.length;i++){		 				 			
+ 			var shouldPush = true;
+			for(var k=0;k<data.length;k++){
+				if(data[k].data.next == data[i].data.id){
+					shouldPush = false;
+					break;  //跳出for循环
+				}
+			}			
+			//递归
+			function lookforNext(nextField){						
+			 	//console.log(nextField);
+				for(var j=0;j<data.length;j++){
+					 if(data[j].data.id == nextField){							 
+						 afterSort.push(data[j]); //插入新数组							 
+						 //data.splice(j,1);
+						 if(data[j].data.next!=0){
+							 lookforNext(data[j].data.next);
+						 }							 													 		
+						 break; //跳出for循环
+					 }
+				}					
+			};	
+						
+			if(shouldPush){
+				afterSort.push(data[i]);//插入新数组
+				if(data[i].data.next!=0){
+					lookforNext(data[i].data.next);
+				}
+				//data.splice(i,1); 					
+			}																			
+		}	
+			
 		return afterSort;
 	};
+	
 
 	//更新数据
 	function update(updateUrl) {

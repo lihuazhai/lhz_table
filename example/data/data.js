@@ -1,14 +1,32 @@
 var data = [{
         "data":{
+            "id":"18",
+			"title":"文章发布功能",
+            "status":"已关闭",
+            "pid":"0",
+			"prev":"0",
+			"next":"20",
+			"startDate":"2012-05-07",
+            "endDate":"2012-05-09",
+            "percent":"30"
+        },
+        "attribute":{
+            "trClass":"closed",
+            "hasFile":true,
+            "edit":false,
+            "links":{
+				"title":"task/129",
+				"assignee":"task/19"
+            }
+        }
+     },{
+        "data":{
             "id":"19",
 			"title":"文章发布功能",
-			"description":"文章发布功能,包括新增、修改、删除、目录转移等操作",
-			"subject":"需求管理",
-            "definition":"评审任务",
-            "manHours":"1.2",
             "status":"已关闭",
-            "priority":"P7",
-            "assignee":"管理员",
+            "pid":"0",
+			"prev":"0",
+			"next":"18",
 			"startDate":"2012-05-07",
             "endDate":"2012-05-09",
             "percent":"30"
@@ -26,13 +44,10 @@ var data = [{
         "data":{
             "id":"20",
 			"title":"留言发布功能",
-			"description":"包括新增、修改、审核、删除等操作",
-            "definition":"评审任务", 
-			"subject":"需求管理",
-            "manHours":"0.0",
             "status":"暂停中",
-            "priority":"P3",
-            "assignee":"管理员",
+            "pid":"19",
+			"prev":"0",
+			"next":"0",
 			"startDate":"2012-05-16",
             "endDate":"2012-05-14",
             "percent":"60"
