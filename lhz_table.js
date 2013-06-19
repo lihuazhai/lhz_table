@@ -77,9 +77,9 @@
 			});
 			$.post(dataUrl, function(data) {
 				//var responseJsonData = eval('('+data+')');//response.responseText是Ajax的返回值
-				//alert(responseJsonData);//这行是对的，打印结果是：[object object],说明已经json数组已经转化为json对象了				
-				var jsonData = sortData(data);	
-				//alertTest(jsonData);			
+				//alert(responseJsonData);//这行是对的，打印结果是：[object object],说明已经json数组已经转化为json对象了					
+				var objData = arrayToObj(data,"id");
+				var jsonData = formatData(objData);		
 				dataHtml = showData(jsonData);
 			}, "json");
 		} else {
@@ -111,46 +111,40 @@
 		return false;  
 	}
 	
-	//数据排序
-	function sortData(data) {
-		data.reverse();//先按id排序
-		var afterSort = new Array();
-		
-		for(var i=0;i<data.length;i++){		 				 			
- 			var shouldPush = true;
-			for(var k=0;k<data.length;k++){
-				if(data[k].data.next == data[i].data.id){
-					shouldPush = false;
-					break;  //跳出for循环
-				}
-			}			
-			//递归
-			function lookforNext(nextField){						
-			 	//console.log(nextField);
-				for(var j=0;j<data.length;j++){
-					 if(data[j].data.id == nextField){							 
-						 afterSort.push(data[j]); //插入新数组							 
-						 //data.splice(j,1);
-						 if(data[j].data.next!=0){
-							 lookforNext(data[j].data.next);
-						 }							 													 		
-						 break; //跳出for循环
-					 }
-				}					
-			};	
-						
-			if(shouldPush){
-				afterSort.push(data[i]);//插入新数组
-				if(data[i].data.next!=0){
-					lookforNext(data[i].data.next);
-				}
-				//data.splice(i,1); 					
-			}																			
-		}	
-			
-		return afterSort;
-	};
+	//数组转对象attributeFlag,以哪个做为新对象的属性名称
+	function arrayToObj(data,attributeFlag){
+		var result = {};
+		var l = data.length;
+		for(var i=0;i<l;i++){
+			var attribute = data[i]["data"][attributeFlag];
+			result[attribute] = data[i];			
+		}				
+		return result;		
+	}
 	
+	
+	function formatData(objData){
+		var afterSort = new Array();				
+		for(var i in objData) { 			
+			//递归
+			function getNext(nextField){
+				afterSort.push(objData[nextField]);
+				if(objData[nextField].data.next!=0){
+					getNext(objData[nextField].data.next);
+				}				
+			};
+			
+			if(objData[i].data.prev == 0){
+				afterSort.push(objData[i]);
+			}
+			
+			if(objData[i].data.next!=0){
+				getNext(objData[i].data.next);
+			}
+		}  
+				
+		return afterSort;
+	}	
 
 	//更新数据
 	function update(updateUrl) {
