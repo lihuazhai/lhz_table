@@ -1,9 +1,9 @@
 <?php
 
-  $mydbhost     = "localhost";      //ÅäÖÃÖ÷»ú
-  $mydbuser     = "root";           //Êý¾Ý¿âÓÃ»§
-  $mydbpw       = "";            //Êý¾Ý¿âÃÜÂë
-  $mydbname		= "table_show";		//Êý¾Ý¿âÃû
+  $mydbhost     = "localhost";      //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  $mydbuser     = "root";           //ï¿½ï¿½Ý¿ï¿½ï¿½Ã»ï¿½
+  $mydbpw       = "";            //ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½
+  $mydbname		= "lhz_table";		//ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½
   $mydbcharset	= "utf8";
   
   date_default_timezone_set("Asia/Hong_kong");

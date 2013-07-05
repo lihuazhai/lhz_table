@@ -1,10 +1,52 @@
 @charset "utf-8";
 /* CSS Document */
-#lhz_table-box{ width: 1000px; height:300px; border:1px #003399 solid;}
-#lhz_table-box #tb-data-show ul{ clear:both;}
-#lhz_table-box #tb-data-show ul li{ float:left;}
+#lhz-table-box {
+	width: 1000px;
+	border: 1px #f1f1f1 solid;
+}
+#lhz-table-box #tb-data-show ul {
+	clear: both;
+}
+#lhz-table-box #tb-data-show ul li {
+	float: left;
+}
+#tb-data-show table {
+	width: 100%;
+}
+#tb-data-show td {
+	border: 1px #CCCCCC solid;
+}
+.pop-dialog {
+	width: 500px;
+	height: 200px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -100px auto auto -250px;
+	background: none repeat scroll 0 0 #FFFFFF;
+	border-radius: 8px 8px 8px 8px;
+	z-index: 1032;
+	border: 1px #A3C6C8 solid;
+}
+.addNewForm ul {
+	margin: 10px;
+}
+.addNewForm li {
+	margin-bottom: 10px;
+}
+.addNewBtns {
+	text-align: right;
+}
+.addNewBtns a {
+	display: inline-block;
+	width: 60px;
+	height: 20px;
+	text-align: center;
+	margin-right: 10px;
+	background: #0000FF;
+	color: #F1F1F1;
+}
 
-#tb-data-show table{ width:100%;}
-#tb-data-show td{ border:1px #CCCCCC solid;}
-
+.addNewForm input[type='text']{ height: 20px; line-height: 20px; width: 200px;}
+.addNewForm textarea{ height: 80px; line-height: 20px; width: 200px;}
 

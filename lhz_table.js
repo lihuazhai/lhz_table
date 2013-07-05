@@ -1,7 +1,5 @@
 /*!
  * jQuery Cookie Plugin v1.9.0
- * https://github.com/carhartl/jquery-cookie
- * Copyright 2013 Klaus Hartl
  */
 (function($) {
 	var jsPath = getPath();
@@ -14,56 +12,68 @@
 		return this.each(function() {
 			var tbObj = $(this);
 			tbObj.html(loadFrame());
+			loadControl(opts);
 			$("#tb-data-show").html(loadDate(opts));
 			//update(opts.updateUrl);
 		});
 	};
-	// 私有函数：取页面路径
-	function getPath() {
-		var js = document.scripts;
-		var jsPath = "";
-		for(var i = 0; i < js.length; i++) {
-			if(js[i].src.indexOf("tableShow") != "-1") {
-				jsPath = js[i].src.substring(0, js[i].src.lastIndexOf("/"));
-				break;
-			}
-		}
-		return jsPath;
-	};
-
-	// 私有函数：加载js或css
-	function loadjscssfile(filename, filetype) {
-		if(filetype == "js") {
-			var fileref = document.createElement('script');
-			fileref.setAttribute("type", "text/javascript");
-			fileref.setAttribute("src", filename);
-		} else if(filetype == "css") {
-			var fileref = document.createElement('link');
-			fileref.setAttribute("rel", "stylesheet");
-			fileref.setAttribute("type", "text/css");
-			fileref.setAttribute("href", filename);
-		}
-		if( typeof fileref != "undefined") {
-			document.getElementsByTagName("head")[0].appendChild(fileref);
-		}
-	};
-
-	function alertTest(obj) {
-		var str = JSON.stringify(obj)
-		alert(str);
-		//用于测试
-	};
-
 	// 私有函数：载入框架
 	function loadFrame() {
 		var frame_box = '';
-		frame_box += '<div id="lhz_table-box">';
-		frame_box += '<div class="control_box"></div>';
+		frame_box += '<div id="lhz-table-box">';
+		frame_box += '<div class="lhz-filter-box"></div>';
 		frame_box += '<div id="tb-data-show"></div>';
 		frame_box += '<div id="control_btn_box" class="clearfix" >';
-		frame_box += '<div id="page" class="page"></div>';
+		frame_box += '<div id="lhz-page" class="page"></div>';
 		frame_box += '</div></div>';
 		return frame_box;
+	};
+	
+	// 私有函数：载入控制
+	function loadControl(opts) {
+		var control_html = '<div>' + '<input type="button" value="新增" id="lhz-table-addNew" />'
+							+'<input type="button" value="删除" id="lhz-table-del" /></div>';
+							
+		$(".lhz-filter-box").html(control_html);
+		
+		$("#lhz-table-addNew").click(function(){
+			pop_dialog();
+			var formHtml = addNewForm();
+			var btns = '<div class="addNewBtns"><a href="javascript:void(0);" id="addSubmit">提交</a>'
+				  		+'<a href="javascript:void(0);" id="addClose">关闭</a></div>';
+			 
+			$(".pop-dialog-title").html("新增");
+			$(".pop-dialog-content").html(formHtml);
+			$(".pop-dialog-footer").html(btns);	
+			
+			$("#addSubmit").click(function(){
+				var title = $("#newFormTitle").val();
+				var content = $("#newFormContent").val();
+				var addUrl = opts.addUrl;
+				addDate(addUrl,title,content);//新增数据插入到数据库
+			});
+			
+			$("#addClose").click(function(){
+				$('.pop-dialog').hide();
+			});
+				
+		});
+		
+		$("#lhz-table-del").click(function(){
+		    //判断是否至少选择了一项         
+		    var checkedObj = $("#lhz-table-box input[name='ids[]']:checked");
+            if (checkedObj.length == 0) {
+                alert("至少选择一项");
+                return;
+            }
+            if(confirm("确定要批量删除吗?")){
+            	checkedObj.each(function(index){
+            		var thidId = $(this).attr("value");
+            		delData(opts.addUrl,thidId);//删除数据操作数据库
+            	});
+            } 		
+		});
+		
 	};
 
 	// 私有函数：载入数据
@@ -77,9 +87,8 @@
 			});
 			$.post(dataUrl, function(data) {
 				//var responseJsonData = eval('('+data+')');//response.responseText是Ajax的返回值
-				//alert(responseJsonData);//这行是对的，打印结果是：[object object],说明已经json数组已经转化为json对象了					
-				var objData = arrayToObj(data,"id");
-				var jsonData = formatData(objData);		
+				//alert(responseJsonData);//这行是对的，打印结果是：[object object],说明已经json数组已经转化为json对象了
+				var jsonData = formatData(data);
 				dataHtml = showData(jsonData);
 			}, "json");
 		} else {
@@ -92,6 +101,7 @@
 			var dataHtmlTemp = '<table>';
 			for(var i = 0; i < dataLeng; i++) {
 				dataHtmlTemp += '<tr tr-id=' + dataJson[i].data["id"] + '">';
+				dataHtmlTemp += '<td><input type="checkbox" name="ids[]" value="' +dataJson[i].data["id"]+ '" /></td>';
 				for(var x in dataJson[i].data) {
 					dataHtmlTemp += '<td>' + dataJson[i].data[x] + '</td>';
 				}
@@ -102,51 +112,125 @@
 
 		return dataHtml;
 	};
-	
-	Array.prototype.in_array = function(e)  {  
-		for(i=0;i<this.length;i++)  {  
-			if(this[i] == e)  
-			return true;  
-		}  
-		return false;  
-	}
-	
+
 	//数组转对象attributeFlag,以哪个做为新对象的属性名称
-	function arrayToObj(data,attributeFlag){
+	function arrayToObj(data, attributeFlag) {
 		var result = {};
 		var l = data.length;
-		for(var i=0;i<l;i++){
+		for(var i = 0; i < l; i++) {
 			var attribute = data[i]["data"][attributeFlag];
-			result[attribute] = data[i];			
-		}				
-		return result;		
-	}
-	
-	
-	function formatData(objData){
-		var afterSort = new Array();				
-		for(var i in objData) { 			
-			//递归
-			function getNext(nextField){
-				afterSort.push(objData[nextField]);
-				if(objData[nextField].data.next!=0){
-					getNext(objData[nextField].data.next);
-				}				
-			};
-			
-			if(objData[i].data.prev == 0){
+			result[attribute] = data[i];
+		}
+		return result;
+	};
+
+	function formatData(sourceData) {
+		var objData = arrayToObj(sourceData, "id");
+		var parentNodes = [];
+		var childNodes = [];
+		var arr_result = [];
+		var sourceDataLength = sourceData.length
+
+		for(var i = 0; i < sourceDataLength; i++) {
+			if(sourceData[i].data["pid"] == 0) {
+				parentNodes.push(sourceData[i]);
+			} else {
+				childNodes.push(sourceData[i]);
+			}
+		}
+
+		console.info("父任务共有 " + parentNodes.length + " 条");
+		console.info("子任务共有 " + childNodes.length + " 条");
+
+		var afterSort = new Array();
+
+		//递归
+		function getNext(nextField) {
+			afterSort.push(objData[nextField]);
+			if(objData[nextField].data.next_id != 0) {
+				getNext(objData[nextField].data.next_id);
+			}
+		};
+
+		function getChildNodes(parentNodeId, depth) {
+			var childLength = childNodes.length;
+			for(var i = 0; i < childLength; i++) {
+				if(childNodes[i].data[pId] == parentNodeId) {
+					childNodes[i].level = depth;
+					arr_result.push(childNodes[i]);
+					getChildNodes(childNodes[i].data.id, depth + 1);
+				}
+			}
+		}
+
+		for(var i in objData) {
+			if(objData[i].data.prev_id == 0) {
 				afterSort.push(objData[i]);
 			}
-			
-			if(objData[i].data.next!=0){
-				getNext(objData[i].data.next);
+			if(objData[i].data.next_id != 0) {
+				getNext(objData[i].data.next_id);
 			}
-		}  
-				
-		return afterSort;
-	}	
+		}
 
-	//更新数据
+		//alertTest(afterSort);
+
+		return afterSort;
+	};
+
+	/*function formatData(objData){
+	var afterSort = new Array();
+	for(var i in objData) {
+	//递归
+	function getNext(nextField){
+	afterSort.push(objData[nextField]);
+	if(objData[nextField].data.next_id!=0){
+	getNext(objData[nextField].data.next_id);
+	}
+	};
+
+	if(objData[i].data.prev_id == 0){
+	afterSort.push(objData[i]);
+	}
+
+	if(objData[i].data.next_id!=0){
+	getNext(objData[i].data.next_id);
+	}
+	}
+
+	return afterSort;
+	}*/
+	
+	//新增数据页面
+	function addNewForm(){
+		var formHtml = '<div class="addNewForm">'
+			+'<ul>'
+			+'<li>名称：<input type="text" name="title" id="newFormTitle" /></li>'
+			+'<li>内容：<textarea name="content" id="newFormContent"></textarea></li></ul>'
+			+'</div>';
+		return formHtml;
+	};
+	
+   //新增数据操作
+	function addDate(url,title,content) {
+		$.ajax({
+			type : "POST",
+			url: url, 
+			data : {"action": "add", "title" : title, "content" : content}, 
+			success: function(data){
+				if(data == true){
+					alert("新增成功！");
+				}else{
+					alert("新增失败！")
+				}
+				$('.pop-dialog').hide();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+	           alert("ajax error");
+	       }
+	   });
+	};
+
+	//更新数据操作
 	function update(updateUrl) {
 		$.get(updateUrl, {
 			title : "John",
@@ -155,6 +239,25 @@
 			alert("Data Loaded: " + data);
 		});
 	};
+	
+	//删除数据操作
+	function delData(url,id){
+		$.ajax({
+			type : "POST",
+			url: url, 
+			data : {"action": "del", "id" : id}, 
+			success: function(data){
+    			if(data == true){
+    				alert("成功！");
+    			}else{
+    				alert("失败！")
+    			}
+  			},
+  			error : function(XMLHttpRequest, textStatus, errorThrown) {
+               alert("ajax error");
+           }
+       });
+	};
 
 	// 插件的defaults
 	$.fn.lhz_table.defaults = {
@@ -162,4 +265,5 @@
 		updateUrl : null,
 		background : 'yellow'
 	};
+
 })(jQuery);

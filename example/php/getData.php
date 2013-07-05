@@ -14,10 +14,10 @@
 	  $arr_data[] = array('data' => 
 						array('id'=>$row['id'],
 						'title'=>$row['title'],
-						'description'=>$row['content'],
+						'content'=>$row['content'],
 						'pid'=>$row['pid'],
-						'prev'=>$row['prev'],
-						'next'=>$row['next']
+						'prev_id'=>$row['prev_id'],
+						'next_id'=>$row['next_id']
 						)
 					);
 	}
