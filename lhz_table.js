@@ -14,6 +14,9 @@
 			tbObj.html(loadFrame());
 			loadControl(opts);
 			$("#tb-data-show").html(loadDate(opts));
+			if(opts.config.ifEdit){
+				edit(opts);
+			}
 			//update(opts.updateUrl);
 		});
 	};
@@ -99,11 +102,19 @@
 		function showData(dataJson) {
 			var dataLeng = dataJson.length;
 			var dataHtmlTemp = '<table>';
+			dataHtmlTemp += '<tr>';
+			dataHtmlTemp += '<td>id</td>';
+			dataHtmlTemp += '<td>id</td>';
+			dataHtmlTemp += '<td data-field="title">标题</td>';
+			dataHtmlTemp += '<td data-field="content">内容</td>';
+			dataHtmlTemp += '<td>pid</td>';
+			dataHtmlTemp += '<td>prveId</td>';
+			dataHtmlTemp += '<td>nextId</td></tr>';
 			for(var i = 0; i < dataLeng; i++) {
 				dataHtmlTemp += '<tr tr-id=' + dataJson[i].data["id"] + '">';
-				dataHtmlTemp += '<td><input type="checkbox" name="ids[]" value="' +dataJson[i].data["id"]+ '" /></td>';
+				dataHtmlTemp += '<td data-field="id"><input type="checkbox" name="ids[]" value="' +dataJson[i].data["id"]+ '" /></td>';
 				for(var x in dataJson[i].data) {
-					dataHtmlTemp += '<td>' + dataJson[i].data[x] + '</td>';
+					dataHtmlTemp += '<td data-field="'+ x +'"><span>' + dataJson[i].data[x] + '</span></td>';
 				}
 				dataHtmlTemp += '</tr>';
 			}
@@ -177,28 +188,6 @@
 		return afterSort;
 	};
 
-	/*function formatData(objData){
-	var afterSort = new Array();
-	for(var i in objData) {
-	//递归
-	function getNext(nextField){
-	afterSort.push(objData[nextField]);
-	if(objData[nextField].data.next_id!=0){
-	getNext(objData[nextField].data.next_id);
-	}
-	};
-
-	if(objData[i].data.prev_id == 0){
-	afterSort.push(objData[i]);
-	}
-
-	if(objData[i].data.next_id!=0){
-	getNext(objData[i].data.next_id);
-	}
-	}
-
-	return afterSort;
-	}*/
 	
 	//新增数据页面
 	function addNewForm(){
@@ -209,6 +198,46 @@
 			+'</div>';
 		return formHtml;
 	};
+	
+	
+    function toUpdade(event){
+    	var $this = $(event.target);//获取当前jquery对象
+	    var edit_id = $(this).parents('tr').children().first().find("input").val();
+	 	var field = $(this).parent('td').attr("data-field");
+	 	var new_val = $(this).prev().text();
+	 	var edit_data = {id:edit_id,field:field,new_val:new_val};
+	 	alertTest(edit_data);
+	 	//update(opts.updateUrl,edit_data);
+    };	
+	
+	//点击启动编辑功能
+	function edit(opts){
+		$("#lhz-table-box td").hover(function() {
+ 			$(this).css("cursor","text");
+ 			$(this).find("span").css("border-bottom","dashed 1px #08C");
+		}, function() {
+        	$(this).find("span").css("border-bottom","dashed 1px #FFF"); 
+        	$(this).find("span.urlEdit").css("display","none");
+		});
+		
+		$("#lhz-table-box td").click(function(){
+			var tdobj = $(this);
+           if(tdobj.children("input").length > 0) {//禁止重复点击
+               return false;
+           }
+		   var old_val = $(this).text();
+			
+		   var html_new = '<input type="text" value="'+ old_val +'"  />';
+		       html_new += '<a class="update_btn" href="javascript:void(0);" >提交更新</a>';
+               html_new += '<a class="cancel_btn" href="javascript:void(0);" >撤消操作</a>';
+		    $(this).html(html_new); 
+		    
+		    $(".update_btn").bind("click", {type: "text"}, toUpdade); 
+		    
+
+		});
+	};
+	
 	
    //新增数据操作
 	function addDate(url,title,content) {
@@ -231,7 +260,7 @@
 	};
 
 	//更新数据操作
-	function update(updateUrl) {
+	function update(updateUrl,data) {
 		$.get(updateUrl, {
 			title : "John",
 			content : "2pm"
