@@ -42,14 +42,14 @@ Array.prototype.in_array = function(e)  {
 		return true;  
 	}  
 	return false;  
-}
+};
 
 //pop弹窗框
 function pop_dialog(){
 	var popHtml = '<div class="pop-dialog">'
-				  +'<div class="pop-dialog-title"></div>'
-				  +'<div class="pop-dialog-content"></div>'
-				  +'<div class="pop-dialog-footer"></div>'
-	              +'</div>';
-        $("body").append(popHtml);
-}
+		  +'<div class="pop-dialog-title"></div>'
+		  +'<div class="pop-dialog-content"></div>'
+		  +'<div class="pop-dialog-footer"></div>'
+          +'</div>';
+    $("body").append(popHtml);
+};
