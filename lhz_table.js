@@ -13,7 +13,7 @@
 			var tbObj = $(this);
 			tbObj.html(loadFrame());
 			loadControl(opts);
-			$(".tb-data-show").html(loadDate(opts));
+			$(".lhz-data-show").html(loadDate(opts));
 			if(opts.config.ifEdit) {
 				edit(opts);
 			}
@@ -53,10 +53,8 @@ function formatData(sourceData) {
 			childNodes.push(sourceData[i]);
 		}
 	}
-
-	console.info("父任务共有 " + parentNodes.length + " 条");
-	console.info("子任务共有 " + childNodes.length + " 条");
-
+	//console.info("父任务共有 " + parentNodes.length + " 条");
+	//console.info("子任务共有 " + childNodes.length + " 条");
 	var afterSort = new Array();
 
 	//递归
@@ -86,10 +84,21 @@ function formatData(sourceData) {
 			getNext(objData[i].data.next_id);
 		}
 	}
-
 	return afterSort;
 };
+
+
+
+//显示操作提示
+function showPrompt(text){
+	var html = '<span class="lhz-showPrompt">'+text+'</span>';
+	$(".lhz-table-box").append(html);
 	
+	var hidePrompt = function(){
+		$(".lhz-showPrompt").hide();
+	};
+    setTimeout(hidePrompt,1000);
+};	
 
 
 /*******************************************************************************
@@ -105,7 +114,7 @@ function loadFrame() {
 	var frame_box = '';
 	frame_box += '<div class="lhz-table-box">';
 	frame_box += '<div class="lhz-filter-box"></div>';
-	frame_box += '<div class="tb-data-show"></div>';
+	frame_box += '<div class="lhz-data-show"></div>';
 	frame_box += '<div class="control_btn_box" class="clearfix" >';
 	frame_box += '<div class="lhz-page"></div>';
 	frame_box += '</div></div>';
@@ -133,6 +142,7 @@ function loadControl(opts) {
 			var addUrl = opts.addUrl;
 			daoMethods.addData(addUrl, title, content);
 			//新增数据插入到数据库
+			refresh(opts);
 		});
 	});
 
@@ -148,6 +158,7 @@ function loadControl(opts) {
 				var thidId = $(this).attr("value");
 				daoMethods.delData(opts.addUrl, thidId);
 				//删除数据操作数据库
+				refresh(opts);
 			});
 		}
 	});
@@ -225,9 +236,9 @@ function edit(opts) {
 		$(this).find("span.urlEdit").css("display", "none");
 	});
 
-	$(".lhz-table-box td").click(function() {
-		var tdobj = $(this);
-		if(tdobj.children("input").length > 0) {//禁止重复点击
+	$(".lhz-table-box td span").click(function() {
+		var tdobj = $(this).parent();
+		if(tdobj.children().children().length > 0) {//禁止重复点击
 			return false;
 		}
 		var old_val = $(this).text();
@@ -235,7 +246,7 @@ function edit(opts) {
 		var html_new = '<input type="text" value="' + old_val + '"  />';
 			html_new += '<a class="update_btn" href="javascript:void(0);" >提交更新</a>';
 			html_new += '<a class="cancel_btn" href="javascript:void(0);" >撤消操作</a>';
-		$(this).html(html_new);
+		tdobj.html(html_new);
 
 		$(".update_btn").bind("click", {
 			opts : opts ,type : "text"
@@ -243,6 +254,7 @@ function edit(opts) {
 
 	});
 };
+
 //取更新的新数据
 function toUpdade(event) {
 	var $this = $(event.target);
@@ -258,8 +270,16 @@ function toUpdade(event) {
 	};
 	//alertTest(edit_data);
 	daoMethods.update(event.data.opts.updateUrl,edit_data);
+	refresh(event.data.opts);
 };
 
+//刷新数据
+function refresh(opts){
+	$(".lhz-data-show").html(loadDate(opts));
+	if(opts.config.ifEdit) {
+		edit(opts);
+	}
+}
 
 	
 /*******************************************************************************
@@ -283,9 +303,9 @@ var daoMethods = {
 			},
 			success : function(data) {
 				if(data == true) {
-					alert("新增成功！");
+					showPrompt("新增成功!");
 				} else {
-					alert("新增失败！")
+					alert("新增失败!")
 				}
 				$('.pop-dialog').hide();
 			},
@@ -302,9 +322,9 @@ var daoMethods = {
 			data : edit_data,
 			success : function(data) {
 				if(data == true) {
-					alert("成功！");
+					showPrompt("修改成功!");
 				} else {
-					alert("失败！")
+					alert("失败!")
 				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -323,9 +343,9 @@ var daoMethods = {
 			},
 			success : function(data) {
 				if(data == true) {
-					alert("成功！");
+					showPrompt("删除成功!");
 				} else {
-					alert("失败！")
+					alert("失败!")
 				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {

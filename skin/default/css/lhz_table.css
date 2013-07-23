@@ -40,23 +40,24 @@
 	line-height: 20px;
 	width: 200px;
 }
+.lhz-showPrompt{ position: absolute; top:1px; right: 30px; background: #AB1E1E; color:#F1F1F1; padding: 2px 3px; }
 .lhz-table-box {
-	width: 100%;
+	width: 100%; position:relative;
 	border: 1px #f1f1f1 solid;
 }
-.lhz-table-box .tb-data-show ul {
+.lhz-table-box .lhz-data-show ul {
 	clear: both;
 }
-.lhz-table-box .tb-data-show ul li {
+.lhz-table-box .lhz-data-show ul li {
 	float: left;
 }
-.lhz-table-box .tb-data-show table {
-	width: 100%;
+.lhz-table-box .lhz-data-show table {
+	width: 98%;
 }
-.lhz-table-box .tb-data-show td {
+.lhz-table-box .lhz-data-show td {
 	border: 1px #CCCCCC solid;
 }
-.lhz-table-box .tb-data-show thead td {
+.lhz-table-box .lhz-data-show thead td {
 	text-align: center;
 }
 .update_btn,.cancel_btn {background:#939393;padding: 3px; margin-left: 5px; color: #F1F1F1;}
