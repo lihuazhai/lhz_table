@@ -1,6 +1,7 @@
 <?php
 	include "config.php";
 	$con = mysql_connect($mydbhost, $mydbuser,$mydbpw);
+	mysql_query('SET NAMES utf8');
 	if (!$con){
 	  die('Could not connect: ' . mysql_error());
 	}

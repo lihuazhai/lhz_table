@@ -45,8 +45,9 @@
 	width: 100%; position:relative;
 	border: 1px #f1f1f1 solid;
 }
+.lhz-table-box .lhz-data-show{margin-bottom: 10px;}
 .lhz-table-box .lhz-data-show ul {
-	clear: both;
+	clear: both; margin-bottom: 10px;
 }
 .lhz-table-box .lhz-data-show ul li {
 	float: left;
@@ -62,3 +63,12 @@
 }
 .update_btn,.cancel_btn {background:#939393;padding: 3px; margin-left: 5px; color: #F1F1F1;}
 .update_btn:hover,.cancel_btn:hover {color: #F1F1F1;}
+
+/*lhz-page*/
+.lhz-page { margin-bottom: 10px;  }
+.lhz-page a { display: inline-block; border: 1px solid #CCCCCC; margin: 0 2px; height: 20px; line-height: 20px; padding: 0 6px; color: #333; cursor: pointer; }
+.lhz-page a:hover { background-color: #CCCCCC; text-decoration: none; }
+.lhz-page .currentPage { background: none repeat scroll 0 0 #FFFFFF; border: 1px solid #FFFFFF; color: #2F2F2F; font-weight: bold; }
+.lhz-page .pagenumber { text-align: center; background-color: White; color: Black; }
+.lhz-page .pagenumberselected { background-color: #16387D; ; color: White; }
+.lhz-page b { padding: 0px 3px; }

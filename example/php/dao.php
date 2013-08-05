@@ -46,5 +46,20 @@ if($action == 'update'){
     } 
 }
 
+if($action == 'sel'){
+	$currentPage = $_POST['currentPage'];
+	$pageSize = $_POST['pageSize'];
+	$begin = ($currentPage-1)*$pageSize;
+	$end = $currentPage*$pageSize;
+	$new_val = $_POST['new_val'];
+	$sql = "select * from task LIMIT $begin,$end;";
+    $result = mysql_query($sql);
+    if((mysql_affected_rows()==0)||(mysql_affected_rows()==-1)){
+        echo false;
+    }else{
+    	echo true;
+    } 
+}
+
 mysql_close($con);
 ?>

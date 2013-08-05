@@ -17,6 +17,9 @@
 			if(opts.config.ifEdit) {
 				edit(opts);
 			}
+			var pageMsg = {'boxId':'lhz-page','totalNum':50,'totalPage':25,
+			'pageSize':10,'currentPage':2,'pageCallBack':_callBackPage};
+			_createPage(pageMsg);
 		});
 	};
 
@@ -98,8 +101,14 @@ function showPrompt(text){
 		$(".lhz-showPrompt").hide();
 	};
     setTimeout(hidePrompt,1000);
-};	
+};
 
+
+//分页回调操作
+function _callBackPage(currentPage,pageSize) {
+	daoMethods.selectData(currentPage,pageSize)
+};
+	
 
 /*******************************************************************************
 * //v，页面展示层
@@ -112,12 +121,11 @@ function showPrompt(text){
 // 私有函数：载入框架
 function loadFrame() {
 	var frame_box = '';
-	frame_box += '<div class="lhz-table-box">';
-	frame_box += '<div class="lhz-filter-box"></div>';
-	frame_box += '<div class="lhz-data-show"></div>';
-	frame_box += '<div class="control_btn_box" class="clearfix" >';
-	frame_box += '<div class="lhz-page"></div>';
-	frame_box += '</div></div>';
+		frame_box += '<div class="lhz-table-box">';
+		frame_box += '<div class="lhz-filter-box"></div>';
+		frame_box += '<div class="lhz-data-show"></div>';
+		frame_box += '<div class="lhz-page"></div>';
+		frame_box += '</div>';
 	return frame_box;
 };
 
@@ -281,6 +289,117 @@ function refresh(opts){
 	}
 }
 
+//分页
+function _createPage(msg) {
+	var boxId = msg.boxId;
+	var totalNum = msg.totalNum;
+	var totalPage = msg.totalPage;
+	var pageSize = msg.pageSize;
+	var currentPage = msg.currentPage;
+	var pageCallBack = msg.pageCallBack;
+
+	var pageHtml = '';
+
+	if(totalPage > 1) {
+		if(currentPage != 1) {
+			pageHtml += '<a class="prePage" href="javascript:void(0);">上一页</a>';
+		}
+		if(currentPage == "1") {
+			pageHtml += '<a class="currentPage" href="javascript:void(0);">1</a>';
+		} else {
+			pageHtml += '<a href="javascript:void(0);">1</a>';
+		}
+
+		if(currentPage > 4) {
+			pageHtml += '<span>...</span>';
+		}
+
+		var midLastPage = currentPage + 4 >= totalPage ? totalPage : currentPage + 4;
+		var midFirstPage = currentPage - 2 <= 2 ? 2 : currentPage - 2;
+
+		for(var i = midFirstPage; i < midLastPage; i++) {
+			if(i != currentPage) {
+				pageHtml += '<a href="javascript:void(0);">' + i + '</a>';
+			} else {
+				pageHtml += '<a class="currentPage" href="javascript:void(0);">' + currentPage + '</a>';
+			}
+		}
+
+		if(currentPage < totalPage - 4) {
+			pageHtml += '<span>...</span>';
+		}
+		if(currentPage == totalPage) {
+			pageHtml += '<a class="currentPage" href="javascript:void(0);">' + totalPage + '</a>';
+		} else {
+			pageHtml += '<a href="javascript:void(0);">' + totalPage + '</a>';
+		}
+		if(currentPage != totalPage) {
+			pageHtml += '<a class="nextPage" href="javascript:void(0);">下一页</a>';
+		}
+	} else {
+		pageHtml += '<a class="currentPage" href="javascript:void(0);">1</a>';
+	}
+	pageHtml += '<span>每页显示<b>';
+	pageHtml += '<select id="pageSize" class="page-size" name="pageSize">';
+
+	if(pageSize == "10") {
+		pageHtml += '<option value="10" selected="selected">10</option>';
+	} else {
+		pageHtml += '<option value="10">10</option>';
+	}
+	if(pageSize == "20") {
+		pageHtml += '<option value="20" selected="selected">20</option>';
+	} else {
+		pageHtml += '<option value="20">20</option>';
+	}
+	if(pageSize == "30") {
+		pageHtml += '<option value="30" selected="selected">30</option>';
+	} else {
+		pageHtml += '<option value="30">30</option>';
+	}
+	if(pageSize == "50") {
+		pageHtml += '<option value="50" selected="selected">50</option>';
+	} else {
+		pageHtml += '<option value="50">50</option>';
+	}
+	if(pageSize == "100") {
+		pageHtml += '<option value="100" selected="selected">100</option>';
+	} else {
+		pageHtml += '<option value="100">100</option>';
+	}
+	pageHtml += '</select></b>条</span>';
+	pageHtml += '<span>共 <b>' + totalPage + '</b>页</span> <span>共<b>' + totalNum + '</b>条数据</span>';
+
+	$("." + boxId).html(pageHtml);
+	
+	//点击页码
+	$("." + boxId +" a").click(function(){
+		var currentPage;
+		var text = jQuery(this).text();
+		var oldPage = jQuery("#" + boxId + " a.currentPage").text();
+		var oldNum = parseInt(oldPage);
+		if (text == "上一页") {
+			currentPage = oldNum - 1;
+		} else if (text == "下一页") {
+			currentPage = oldNum + 1;
+		} else {
+			currentPage = parseInt(text);
+		}
+		var pageSize = jQuery("#pageSize").val();
+		pageCallBack(currentPage, pageSize);
+	});
+	
+    //改变页显示行数
+	$("." + boxId + " #pageSize").change(function() {
+		var currentPage = 1;
+		var pageSizeNew = jQuery("#pageSize").val();
+
+		pageCallBack(currentPage, pageSize);
+	});
+
+};
+
+
 	
 /*******************************************************************************
 * //dao层，直接操作数据库
@@ -352,6 +471,28 @@ var daoMethods = {
 				alert("ajax error");
 			}
 		});
+	},
+	selectData : function (url,currentPage,pageSize) {
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : {
+				"action" : "sel",
+				"currentPage" : currentPage,
+				"pageSize" : pageSize
+			},
+			success : function(data) {
+				if(data == true) {
+					showPrompt("查询成功!");
+				} else {
+					alert("失败!")
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("ajax error");
+			}
+		});
+	  
 	}
 };
 	
