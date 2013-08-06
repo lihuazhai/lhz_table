@@ -2,6 +2,7 @@
 include "config.php";
 
 $con = mysql_connect($mydbhost, $mydbuser,$mydbpw);
+mysql_query('SET NAMES utf8');
 if (!$con){
   die('Could not connect: ' . mysql_error());
 }
@@ -51,13 +52,29 @@ if($action == 'sel'){
 	$pageSize = $_POST['pageSize'];
 	$begin = ($currentPage-1)*$pageSize;
 	$end = $currentPage*$pageSize;
-	$new_val = $_POST['new_val'];
 	$sql = "select * from task LIMIT $begin,$end;";
     $result = mysql_query($sql);
+	
     if((mysql_affected_rows()==0)||(mysql_affected_rows()==-1)){
         echo false;
     }else{
-    	echo true;
+		$arr_data = array();
+		
+		while($row = mysql_fetch_array($result)){
+		  $arr_data[] = array('data' => 
+							array('id'=>$row['id'],
+							'title'=>$row['title'],
+							'content'=>$row['content'],
+							'pid'=>$row['pid'],
+							'prev_id'=>$row['prev_id'],
+							'next_id'=>$row['next_id']
+							)
+						);
+		}
+		
+		//print_r($arr_data);
+		$json_string = json_encode($arr_data);  
+		echo $json_string; 
     } 
 }
 

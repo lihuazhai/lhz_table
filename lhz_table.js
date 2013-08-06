@@ -17,8 +17,9 @@
 			if(opts.config.ifEdit) {
 				edit(opts);
 			}
+			
 			var pageMsg = {'boxId':'lhz-page','totalNum':50,'totalPage':25,
-			'pageSize':10,'currentPage':2,'pageCallBack':_callBackPage};
+			'pageSize':10,'currentPage':2,'pageCallBack':_callBackPage,'url':opts.selectUrl};
 			_createPage(pageMsg);
 		});
 	};
@@ -105,8 +106,8 @@ function showPrompt(text){
 
 
 //分页回调操作
-function _callBackPage(currentPage,pageSize) {
-	daoMethods.selectData(currentPage,pageSize)
+function _callBackPage(url,currentPage,pageSize) {
+	daoMethods.selectData(url,currentPage,pageSize);
 };
 	
 
@@ -185,39 +186,40 @@ function loadDate(opts) {
 			//var responseJsonData = eval('('+data+')');//response.responseText是Ajax的返回值
 			//alert(responseJsonData);//这行是对的，打印结果是：[object object],说明已经json数组已经转化为json对象了
 			var jsonData = formatData(data);
-			dataHtml = showData(jsonData);
+			dataHtml = _showData(jsonData);
 		}, "json");
 	} else {
 		dataJson = opts.source.tbData;
-		dataHtml = showData(dataJson);
+		dataHtml = _showData(dataJson);
 	}
-
-	function showData(dataJson) {
-		var dataLeng = dataJson.length;
-		var dataHtmlTemp = '<table>';
-		dataHtmlTemp += '<thead>';
-		dataHtmlTemp += '<tr>';
-		dataHtmlTemp += '<td>id</td>';
-		dataHtmlTemp += '<td>id</td>';
-		dataHtmlTemp += '<td data-field="title">标题</td>';
-		dataHtmlTemp += '<td data-field="content">内容</td>';
-		dataHtmlTemp += '<td>pid</td>';
-		dataHtmlTemp += '<td>prveId</td>';
-		dataHtmlTemp += '<td>nextId</td></tr>';
-		dataHtmlTemp += '</thead>';
-		for(var i = 0; i < dataLeng; i++) {
-			dataHtmlTemp += '<tr tr-id=' + dataJson[i].data["id"] + '">';
-			dataHtmlTemp += '<td data-field="id"><input type="checkbox" name="ids[]" value="' + dataJson[i].data["id"] + '" /></td>';
-			for(var x in dataJson[i].data) {
-				dataHtmlTemp += '<td data-field="' + x + '"><span>' + dataJson[i].data[x] + '</span></td>';
-			}
-			dataHtmlTemp += '</tr>';
-		}
-		return dataHtmlTemp;
-	}
-
 	return dataHtml;
 };
+
+//= showData生成TdHtml 
+function _showData(dataJson) {
+	var dataLeng = dataJson.length;
+	var dataHtmlTemp = '<table>';
+	dataHtmlTemp += '<thead>';
+	dataHtmlTemp += '<tr>';
+	dataHtmlTemp += '<td>id</td>';
+	dataHtmlTemp += '<td>id</td>';
+	dataHtmlTemp += '<td data-field="title">标题</td>';
+	dataHtmlTemp += '<td data-field="content">内容</td>';
+	dataHtmlTemp += '<td>pid</td>';
+	dataHtmlTemp += '<td>prveId</td>';
+	dataHtmlTemp += '<td>nextId</td></tr>';
+	dataHtmlTemp += '</thead>';
+	for(var i = 0; i < dataLeng; i++) {
+		dataHtmlTemp += '<tr tr-id=' + dataJson[i].data["id"] + '">';
+		dataHtmlTemp += '<td data-field="id"><input type="checkbox" name="ids[]" value="' + dataJson[i].data["id"] + '" /></td>';
+		for(var x in dataJson[i].data) {
+			dataHtmlTemp += '<td data-field="' + x + '"><span>' + dataJson[i].data[x] + '</span></td>';
+		}
+		dataHtmlTemp += '</tr>';
+	}
+	return dataHtmlTemp;
+};
+
 
 //新增数据页面
 function addNewForm() {
@@ -287,7 +289,13 @@ function refresh(opts){
 	if(opts.config.ifEdit) {
 		edit(opts);
 	}
-}
+};
+
+function renew(data){
+	var jsonData = formatData(data);
+	var dataHtml = _showData(data);
+	$(".lhz-data-show").html(dataHtml);
+};
 
 //分页
 function _createPage(msg) {
@@ -297,6 +305,7 @@ function _createPage(msg) {
 	var pageSize = msg.pageSize;
 	var currentPage = msg.currentPage;
 	var pageCallBack = msg.pageCallBack;
+	var url = msg.url;
 
 	var pageHtml = '';
 
@@ -386,7 +395,7 @@ function _createPage(msg) {
 			currentPage = parseInt(text);
 		}
 		var pageSize = jQuery("#pageSize").val();
-		pageCallBack(currentPage, pageSize);
+		pageCallBack(url,currentPage, pageSize);
 	});
 	
     //改变页显示行数
@@ -394,7 +403,7 @@ function _createPage(msg) {
 		var currentPage = 1;
 		var pageSizeNew = jQuery("#pageSize").val();
 
-		pageCallBack(currentPage, pageSize);
+		pageCallBack(url,currentPage, pageSize);
 	});
 
 };
@@ -476,14 +485,16 @@ var daoMethods = {
 		$.ajax({
 			type : "POST",
 			url : url,
+			dataType : "json",
 			data : {
 				"action" : "sel",
 				"currentPage" : currentPage,
 				"pageSize" : pageSize
 			},
 			success : function(data) {
-				if(data == true) {
+				if(data != false) {
 					showPrompt("查询成功!");
+					renew(data);					
 				} else {
 					alert("失败!")
 				}
