@@ -6,7 +6,9 @@
 <script src="../js/jquery-1.9.0.min.js" type="text/javascript"></script>
 <script src="../module/lhz-table-core.js" type="text/javascript"></script>
 <script src="../lhz_table.js" type="text/javascript"></script>
+<script src="setting.js" type="text/javascript"></script>
 <script src="data/data.js" type="text/javascript"></script>
+<script src="../lang/zh-cn.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -17,6 +19,8 @@ $(document).ready(function(){
 			   tbData:data,
 			   dataUrl: "php/getData.php",
 		   },
+		   setting: setting,
+		   lang : $lang,
 		   config:{ifEdit:true},
 		   addUrl:"php/dao.php",
 		   delUrl:"php/dao.php",   

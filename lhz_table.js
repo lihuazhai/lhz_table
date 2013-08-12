@@ -13,6 +13,7 @@
 			var tbObj = $(this);
 			tbObj.html(loadFrame());
 			loadControl(opts);
+			loadFilter(opts);
 			$(".lhz-data-show").html(loadDate(opts));
 			if(opts.config.ifEdit) {
 				edit(opts);
@@ -129,6 +130,20 @@ function loadFrame() {
 		frame_box += '</div>';
 	return frame_box;
 };
+
+// 载入过滤器
+function loadFilter(opts){
+	var filterHtml = '';
+		filterHtml += '<select>'+opts.lang.choose;
+		var itemList = opts.setting.filterData;
+		var itemLength = itemList.length;
+		for (var i=0; i < itemLength; i++) {
+		  filterHtml += '<option>'+itemList[i].name+'</option>';
+		};
+		filterHtml += '</select>';
+		
+		alertTest(filterHtml);
+}
 
 // 私有函数：载入控制
 function loadControl(opts) {
