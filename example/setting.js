@@ -1,48 +1,51 @@
 var setting = {
-	"filterData" : [{
-		"id" : "title",
-		"name" : "标题",
-		"defaultCondition" : "equal",
-		"condition" : [{
-			"hasOption" : false,
-			"name" : "[所有]",
-			"value" : "all"
-		}, {
-			"hasOption" : true,
-			"name" : "等于",
-			"value" : "equal"
-		}, {
-			"hasOption" : true,
-			"name" : "包含",
-			"value" : "include"
-		}],
-		"type" : "text"
-	}, {
-		"id" : "type",
-		"name" : "类别",
-		"type" : "select",
-		"condition" : [{
-			"hasOption" : false,
-			"name" : "[所有]",
-			"value" : "all"
-		}, {
-			"hasOption" : true,
-			"name" : "等于",
-			"value" : "equal"
-		}, {
-			"hasOption" : true,
-			"name" : "不等于",
-			"value" : "notequal"
-		}],
-		"defaultOption" : "bug",
-		"option" : [{
-			"name" : "普通任务",
-			"value" : "daily"
-		}, {
-			"name" : "Bug任务",
-			"value" : "bug"
-		}]
-	}],
+	"filterData" : {
+		"title" : {
+			"id" : "title",
+			"name" : "标题",
+			"defaultCondition" : "equal",
+			"condition" : [{
+				"hasOption" : false,
+				"name" : "[所有]",
+				"value" : "all"
+			}, {
+				"hasOption" : true,
+				"name" : "等于",
+				"value" : "equal"
+			}, {
+				"hasOption" : true,
+				"name" : "包含",
+				"value" : "include"
+			}],
+			"type" : "text"
+		},
+		"type" : {
+			"id" : "type",
+			"name" : "类别",
+			"type" : "select",
+			"condition" : [{
+				"hasOption" : false,
+				"name" : "[所有]",
+				"value" : "all"
+			}, {
+				"hasOption" : true,
+				"name" : "等于",
+				"value" : "equal"
+			}, {
+				"hasOption" : true,
+				"name" : "不等于",
+				"value" : "notequal"
+			}],
+			"defaultOption" : "bug",
+			"option" : [{
+				"name" : "普通任务",
+				"value" : "daily"
+			}, {
+				"name" : "Bug任务",
+				"value" : "bug"
+			}]
+		}
+	},
 
 	"rowData" : {
 		"id" : {

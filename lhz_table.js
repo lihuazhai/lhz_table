@@ -124,7 +124,8 @@ function _callBackPage(url,currentPage,pageSize) {
 function loadFrame() {
 	var frame_box = '';
 		frame_box += '<div class="lhz-table-box">';
-		frame_box += '<div class="lhz-filter-box"></div>';
+		frame_box += '<div class="lhz-filter-box clearfix"><div class="filter_box"><ul></ul></div><div class="sel_box"></div></div>';
+		frame_box += '<div class="lhz-control-box"></div>';
 		frame_box += '<div class="lhz-data-show"></div>';
 		frame_box += '<div class="lhz-page"></div>';
 		frame_box += '</div>';
@@ -134,22 +135,74 @@ function loadFrame() {
 // 载入过滤器
 function loadFilter(opts){
 	var filterHtml = '';
-		filterHtml += '<select>'+opts.lang.choose;
-		var itemList = opts.setting.filterData;
-		var itemLength = itemList.length;
-		for (var i=0; i < itemLength; i++) {
-		  filterHtml += '<option>'+itemList[i].name+'</option>';
+		filterHtml += '<select class="add_filter_item"><option value="0">'+opts.lang.choose+'</option>';
+		var itemList = opts.setting.filterData;		
+		for (item in itemList){
+		   filterHtml += '<option value="'+itemList[item].id+'">'+itemList[item].name+'</option>';
 		};
 		filterHtml += '</select>';
 		
-		alertTest(filterHtml);
+		$(".lhz-filter-box .sel_box").html(filterHtml);
+		
+		var filterBtns = '';
+			filterBtns = '<div class="filterBtns"><input type="button" value="搜索" data-btn="search" /></div>';
+		
+		
+		$(".lhz-filter-box").after(filterBtns);
+		
+		$(".lhz-table-box .filterBtns").find("input[data-btn='search']").click(function(){
+			var selJson = '[';
+			$(".lhz-filter-box .filter_box li").each(function(){
+				var field = $(this).children().eq(0).val();
+				var condition = $(this).children().eq(1).val();
+				var value = $(this).children().eq(2).val();
+                if ($(this).index() == $(".lhz-filter-box .filter_box li").length - 1) {
+                    selJson += '{field:'+field+', condition : '+condition+', value : '+value+'}';
+                }else{
+					selJson += '{field:'+field+', condition : '+condition+', value : '+value+'},';
+                }
+			});
+			selJson += ']';
+			
+			alert(selJson);
+		});
+		
+		$('.add_filter_item').change(function(){
+			var thisValue = $(this).val();
+			var filterItem = '<li>';
+				filterItem += '<input type="checkbox" value="'+thisValue+'" />';
+				filterItem += '<select>';
+				var condition = opts.setting.filterData[thisValue].condition;
+				var conditionLength = condition.length;
+				for (var i=0; i < conditionLength; i++) {
+				  filterItem += '<option value="'+condition[i].value+'">'+condition[i].name+'</option>';
+				};
+				filterItem += '<select>';
+				if(opts.setting.filterData[thisValue].type == "text"){
+					 filterItem += '<input type="text" />';
+				}else if(opts.setting.filterData[thisValue].type == "select"){
+					
+					filterItem += '<select>';
+					var selectObj = opts.setting.filterData[thisValue].option;
+					var optionLength = selectObj.length;
+					for (var i=0; i < optionLength; i++) {
+					  filterItem += '<option value="'+selectObj[i].value+'">'+selectObj[i].name+'</option>';
+					};
+					filterItem += '<select>';
+				}
+				filterItem += '</li>';
+				
+				$(".lhz-filter-box .filter_box ul").append(filterItem);
+				
+		});
+			
 }
 
 // 私有函数：载入控制
 function loadControl(opts) {
 	var control_html = '<div>' + '<input type="button" value="新增" class="lhz-table-addNew" />' + '<input type="button" value="删除" class="lhz-table-del" />' + '</div>';
 
-	$(".lhz-filter-box").html(control_html);
+	$(".lhz-control-box").html(control_html);
 
 	$(".lhz-table-addNew").click(function() {
 		pop_dialog();

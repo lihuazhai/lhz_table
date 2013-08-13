@@ -1,4 +1,14 @@
 @charset "utf-8";
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {
+  *zoom: 1;
+}
 /*pop-dialog*/
 .pop-dialog {
 	width: 500px;
@@ -45,6 +55,12 @@
 	width: 100%; position:relative;
 	border: 1px #f1f1f1 solid;
 }
+
+.lhz-table-box .filter_box{ float: left;
+}
+.lhz-table-box .sel_box{ float: right;
+}
+
 .lhz-table-box .lhz-data-show{margin-bottom: 10px;}
 .lhz-table-box .lhz-data-show ul {
 	clear: both; margin-bottom: 10px;
