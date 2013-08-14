@@ -11,7 +11,7 @@ var setting = {
 			}, {
 				"hasOption" : true,
 				"name" : "等于",
-				"value" : "equal"
+				"value" : "="
 			}, {
 				"hasOption" : true,
 				"name" : "包含",

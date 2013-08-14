@@ -156,15 +156,23 @@ function loadFilter(opts){
 				var field = $(this).children().eq(0).val();
 				var condition = $(this).children().eq(1).val();
 				var value = $(this).children().eq(2).val();
+				if(value == ""){
+					value = " ";
+				}
                 if ($(this).index() == $(".lhz-filter-box .filter_box li").length - 1) {
-                    selJson += '{field:'+field+', condition : '+condition+', value : '+value+'}';
+                    selJson += '{"field":"'+field+'", "condition" : "'+condition+'", "value" : "'+value+'"}';
                 }else{
-					selJson += '{field:'+field+', condition : '+condition+', value : '+value+'},';
+					selJson += '{"field":"'+field+'", "condition" : "'+condition+'", "value" : "'+value+'"},';
                 }
-			});
+			});			
 			selJson += ']';
+				
+		    var obj = eval ("(" + selJson + ")");			
+			//var obj = JSON.parse(selJson); 			
+			//alertTest(obj);
 			
-			alert(selJson);
+			daoMethods.selectDataTemp(opts.selectUrl,1,20,obj);
+
 		});
 		
 		$('.add_filter_item').change(function(){
@@ -558,6 +566,31 @@ var daoMethods = {
 				"action" : "sel",
 				"currentPage" : currentPage,
 				"pageSize" : pageSize
+			},
+			success : function(data) {
+				if(data != false) {
+					showPrompt("查询成功!");
+					renew(data);					
+				} else {
+					alert("失败!")
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("ajax error");
+			}
+		});
+	  
+	},
+	selectDataTemp : function (url,currentPage,pageSize,selData) {
+		$.ajax({
+			type : "POST",
+			url : url,
+			dataType : "json",
+			data : {
+				"action" : "selTemp",
+				"currentPage" : currentPage,
+				"pageSize" : pageSize,
+				"selData" : selData
 			},
 			success : function(data) {
 				if(data != false) {

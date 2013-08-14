@@ -78,5 +78,51 @@ if($action == 'sel'){
     } 
 }
 
+
+if($action == 'selTemp'){
+	$currentPage = $_POST['currentPage'];
+	$pageSize = $_POST['pageSize'];
+	$begin = ($currentPage-1)*$pageSize;
+	$end = $currentPage*$pageSize;
+	
+
+	$json = $_POST['selData'];
+	
+	foreach($json as $item) {
+		$field = $item['field'];
+		$condition = $item['condition'];
+		$value = $item['value'];
+	}
+	if($condition == "include"){
+		$sql = "SELECT * FROM  `task` where ".$field." LIKE '%三%' LIMIT $begin,$end;";
+	}else{
+		$sql = "SELECT * FROM  `task` where $field $condition '$value' LIMIT $begin,$end;";	
+	}
+
+    $result = mysql_query($sql);
+	
+    if((mysql_affected_rows()==0)||(mysql_affected_rows()==-1)){
+        echo false;
+    }else{
+		$arr_data = array();
+		
+		while($row = mysql_fetch_array($result)){
+		  $arr_data[] = array('data' => 
+							array('id'=>$row['id'],
+							'title'=>$row['title'],
+							'content'=>$row['content'],
+							'pid'=>$row['pid'],
+							'prev_id'=>$row['prev_id'],
+							'next_id'=>$row['next_id']
+							)
+						);
+		}
+		
+		//print_r($arr_data);
+		$json_string = json_encode($arr_data);  
+		echo $json_string; 
+    } 
+}
+
 mysql_close($con);
 ?>
