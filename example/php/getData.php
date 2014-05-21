@@ -1,7 +1,7 @@
 <?php
 	include "config.php";
 	$con = mysql_connect($mydbhost, $mydbuser,$mydbpw);
-	mysql_query('SET NAMES utf8');
+	mysql_query("SET NAMES gbk"); 
 	if (!$con){
 	  die('Could not connect: ' . mysql_error());
 	}
