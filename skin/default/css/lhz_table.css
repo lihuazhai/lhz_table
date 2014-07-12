@@ -88,3 +88,7 @@
 .lhz-page .pagenumber { text-align: center; background-color: White; color: Black; }
 .lhz-page .pagenumberselected { background-color: #16387D; ; color: White; }
 .lhz-page b { padding: 0px 3px; }
+
+/*lhz-talbe*/
+.table{border: 1px #CCCCCC solid; }
+.table td{border: 1px #CCCCCC solid; padding:2px 3px; }

@@ -3,37 +3,45 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>lhz_table演示</title>
-<script src="../js/jquery-1.9.1.js" type="text/javascript"></script>
-<script src="../module/lhz-table-core.js" type="text/javascript"></script>
-<script src="../lhz_table.js" type="text/javascript"></script>
+<script src="../lib/jquery-1.9.1.js" type="text/javascript"></script>
+<script src="../lib/require.js" type="text/javascript"></script>
+<script src="../lhz_table_new.js" type="text/javascript"></script>
 <script src="setting.js" type="text/javascript"></script>
 <script src="data/data.js" type="text/javascript"></script>
 <script src="../lang/zh-cn.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+  // $("#lhz_table").lhz_table(
+  // 	     {
+		//   source:{
+		// 	   getType:"url",
+		// 	   tbData:data,
+		// 	   dataUrl: "php/getData.php",
+		//    },
+		//    setting: setting,
+		//    lang : $lang,
+		//    config:{ifEdit:true} 
+	 //   }
+  //  );
+	var data = {
+	    table: [
+	        {name:' klkl', show: true},
+	        {name:' benben', show: false},
+	        {name:' dierbaby', show: true}
+	    ]
+	};
 
-  $("#lhz_table").lhz_table(
-  	     {
-		  source:{
-			   getType:"url",
-			   tbData:data,
-			   dataUrl: "php/getData.php",
-		   },
-		   setting: setting,
-		   lang : $lang,
-		   config:{ifEdit:true},
-		   addUrl:"php/dao.php",
-		   delUrl:"php/dao.php",   
-		   updateUrl:"php/dao.php",
-		   selectUrl:"php/dao.php",
-	   }
-   );
+  $("#lhz_table").lhz_table({lang : $lang,setting : setting,needControl:true,tbData:data,addUrl:"php/dao.php",delUrl:"php/dao.php",updateUrl:"php/dao.php",searchUrl:"php/dao.php"});
    
 });
 </script>
 </head>
 
 <body>
-<div id="lhz_table">待载入。。。</div>
+<div id="lhz_table" style="width:800px;">待载入。。。</div>
+
+<div class="lhz-page">待载入。。。</div>
+
+
 </body>
 </html>

@@ -5,4 +5,228 @@ Datagrid
 未完成：
 过滤器
 
+功能点：
+1.载入数据，生产表格；
+2.指定表头，生产带表头的表格；
+3.指定接口，请求接口获取数据载入表格
+4.表格数据修改保存
+5.删除表格行
+6.
 
+
+
+requirejs
+
+
+加载require.js以后，下一步就要加载我们自己的代码了。假定我们自己的代码文件是main.js，也放在js目录下面。那么，只需要写成下面这样就行了：
+<script src="js/require.js" data-main="js/main"></script>
+
+定义：
+　　// math.js
+　　define(function (){
+　　　　var add = function (x,y){
+　　　　　　return x+y;
+　　　　};
+　　　　return {
+　　　　　　add: add
+　　　　};
+　　});
+加载：
+
+
+// main.js
+　　require(['math'], function (math){
+　　　　alert(math.add(1,1));
+　　});
+
+
+
+
+    list: [
+        {name:' guokai', show: true},
+        {name:' benben', show: false},
+        {name:' dierbaby', show: true}
+    ],
+
+
+一、定义类或对象
+1.工厂方式
+创建对象car 
+var oCar = new Object;
+oCar.color = "red";
+oCar.doors = 4;
+oCar.mpg = 23;
+oCar.showColor = function(){
+   alert(this.corlor);
+};
+
+创建多个car
+function createCar(color, doors, mpg) {
+    var tempcar = new Object;
+    tempcar.color = color;
+    tempcar.doors = doors;
+    tempcar.mpg = mpg;
+    tempcar.showColor = function () {
+        alert(this.color)
+    };
+   return tempcar;
+}
+
+var car1 = createCar("red", 4, 23);
+var car2 = createCar("blue", 3, 25);
+car1.showColor();    //outputs "red"
+car2.showColor();    //outputs "blue"
+这个例子中，每次调用函数createCar()，都要创建新函数showColor()，意味着每个对象都有自己的showColor()版本，事实上，每个对象都共享了同一个函数。
+有些开发者在工厂函数外定义对象的方法，然后通过属性指向该方法，从而避开这个问题。
+function showColor(){
+   alert(this.color);
+}
+function createCar(color, doors, mpg) {
+    var tempcar = new Object;
+    tempcar.color = color;
+    tempcar.doors = doors;
+    tempcar.mpg = mpg;
+    tempcar.showColor = showColor;
+    return tempcar;
+}
+
+var car1 = createCar("red", 4, 23);
+var car2 = createCar("blue", 3, 25);
+car1.showColor();    //outputs "red"
+car2.showColor();    //outputs "blue"
+从功能上讲，这样解决了重复创建函数对象的问题，但该函数看起来不像对象的方法。所有这些问题引发了开发者定义的构造函数的出现。
+
+2.构造函数方法
+function Car(sColor, iDoors, iMpg) {
+    this.color = sColor;
+    this.doors = iDoors;
+    this.mpg = iMpg;
+    this.showColor = function () {
+        alert(this.color)
+    };
+}
+
+var oCar1 = new Car("red", 4, 23);
+var oCar2 = new Car("blue", 3, 25);
+oCar1.showColor();    //outputs "red"
+oCar2.showColor();    //outputs "blue"
+就像工厂函数，构造函数会重复生成函数，为每个对象都创建独立的函数版本。不过，也可以用外部函数重写构造函数，同样，这么做语义上无任何意义。
+
+3.原型方式
+function Car(){
+}
+Car.prototype.color = "red";
+Car.prototype.doors= 4;
+Car.prototype.mpg= 23;
+Car.prototype.showColor = function(){
+   alert(this.color);
+}
+
+var oCar1 = new Car();
+var oCar2 = new Car();
+它解决了前面两种方式存在的两个问题。但并不尽人意。首先，这个构造函数没有参数。使用原型方式时，不能通过构造函数传递参数初始化属性的值，这点很令人计厌，但还没完，真正的问题出现在属性指向的是对象，而不是函数时。考虑下面的例子：
+function Car(){
+}
+Car.prototype.color = "red";
+Car.prototype.doors= 4;
+Car.prototype.mpg= 23;
+Car.prototype.drivers = new Array("Mike","Sue");
+Car.prototype.showColor = function(){
+   alert(this.color);
+}
+
+var oCar1 = new Car();
+var oCar2 = new Car();
+oCar1.drivers.push("Matt");
+alert(oCar1.drivers);      //outputs "Mike,Sue,Matt"
+alert(oCar2.drivers);      //outputs "Mike,Sue,Matt"
+
+4.混合的构造函数/原型方式
+function Car(sColor, iDoors, iMpg) {
+    this.color = sColor;
+    this.doors = iDoors;
+    this.mpg = iMpg;
+    this.drivers = new Array("Mike", "Sue");
+}
+
+Car.prototype.showColor = function () {
+    alert(this.color);
+};
+
+var oCar1 = new Car("red", 4, 23);
+var oCar2 = new Car("blue", 3, 25);
+
+oCar1.drivers.push("Matt");
+
+alert(oCar1.drivers);    //outputs "Mike,Sue,Matt"
+alert(oCar2.drivers);    //outputs "Mike,Sue"
+现在就更像创建一般对象了。所有的非函数属性都有构造函数中创建，意味着又可用构造函数的参数赋予属性默认值了。因为只创建showColor()函数的一个实例，所以没有内存浪费。
+
+5.动态原型方法
+function Car(sColor, iDoors, iMpg) {
+    this.color = sColor;
+    this.doors = iDoors;
+    this.mpg = iMpg;
+    this.drivers = new Array("Mike", "Sue");
+
+    if (typeof Car._initialized == "undefined") {
+
+        Car.prototype.showColor = function () {
+            alert(this.color);
+        };
+
+        Car._initialized = true;
+    }
+}
+
+
+var oCar1 = new Car("red", 4, 23);
+var oCar2 = new Car("blue", 3, 25);
+
+oCar1.drivers.push("Matt");
+
+alert(oCar1.drivers);    //outputs "Mike,Sue,Matt"
+alert(oCar2.drivers);    //outputs "Mike,Sue"
+动态原型方法的基本想法与混合的构造函数/原型方式相同，即在构造函数内定义非函数属性，而函数属性则利用原型属性定义。唯一的区别是赋予对象方法的位置。
+
+6.混合工厂方式
+这种方式通常是在不能应用前一种方式时的变通方法。它的目的是创建假构造函数，只返回另一种对象的新实例。
+function Car() {
+    var tempcar = new Object;
+    tempcar.color = "red";
+    tempcar.doors = 4;
+    tempcar.mpg = 23;
+    tempcar.showColor = function () {
+        alert(this.color)
+    };
+   return tempcar;
+}
+与经典方式不同，这种方式使用new运算符，使它看起来像真正的构造函数。
+
+7.采用哪种方式
+   如前所述，目前使用最广泛的是混合的构造函数/原型方式。些外，动态原型方法也很流行，在功能上与前者等价，可以采用这两种方式中的任何一种。
+
+二、修改对象
+1.创建新方法
+可以用prototype属性为任何已有的类定义新方法，就像处理自己的类一样。
+例：
+Array.prototype.indexOf = function(vItem){
+   for(var i=0;i<this.length;i++){
+      if(vItem == this[i]){
+         return i;
+      }
+   }
+   retunr -1;
+}
+最后，如果想给ECMAScript中的每个本地对象添加新方法，必须在Object对象的prototype属性上定义它。
+
+2.重定义已有方法
+就像能给自己的类定义新方法一样，也可重定义已有的方法。函数名只是指向函数的指针，因此可以轻易地使它指向其他函数。
+如
+Function.prototype.toString = function(){
+   return "Function code hidden";
+}
+function sayHi(){
+   alert("hi");
+}
+alert(sayHi.toString());      //outputs "Function code hidden"

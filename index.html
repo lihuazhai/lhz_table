@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="lib/require.js" data-main="src/main" type="text/javascript"></script>
+    <!--<script src="lib/sea.js" type="text/javascript"></script>-->
+    <!--<script src="lib/mod.js" type="text/javascript"></script>-->
+</head>
+<body>
+<a href="http://localhost/lhz_table/example/">示例</a>
+
+    <div class="tip-banner" id="guangda_notice" style="display:none;margin-bottom:10px;font-size: 14px;"> 
+     公告：建设银行将于7月6日（周日）凌晨2:00-6:30进行系统升级，届时将影响百赚180天系列产品建设银行绑卡操作，请豪友们提前做好准备。
+    </div>
+    <input type="hidden" value="2014-07-6 01:53:00" id="notice_begin" />
+    <input type="hidden" value="2014-07-6 02:02:00" id="notice_end" /> 
+    <script type="text/javascript">
+        (function(){
+        	/*时间字符串转时间戳*/
+            var get_unix_time = function(dateStr){
+			    var newstr = dateStr.replace(/-/g,'/'); 
+			    var date =  new Date(newstr); 
+			    var time_str = date.getTime();
+			    return time_str;
+			}
+
+            var beginStr = document.getElementById("notice_begin").value;
+            var endStr = document.getElementById("notice_end").value
+            var newDate = new Date();
+
+            var begin_timestamp = get_unix_time(beginStr); 
+            var end_timestamp = get_unix_time(endStr); 
+            var now_timestamp = newDate.getTime();
+
+            if(now_timestamp > begin_timestamp && now_timestamp < end_timestamp){
+                document.getElementById("guangda_notice").style.display="";
+            }else{
+                document.getElementById("guangda_notice").style.display="none";
+            }
+        })();
+    </script>
+	
+</body>
+</html>
