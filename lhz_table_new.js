@@ -50,6 +50,12 @@
 
 					page.init(pageMsg);
 				});
+
+				require(['../src/popup.js'], function(Pop) {
+                      var pop =  new Pop({'prefix':'newtest_',title:'标题',content:'内容在这里！',width:200});
+                      pop.setTitle("这是新标题");
+                      pop.render();
+				});
 	
 				// $(".lhz-data-show").html(loadDate(opts));
 
