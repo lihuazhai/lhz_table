@@ -52,11 +52,21 @@
 				});
 
 				require(['../src/popup.js'], function(Pop) {
-                      var pop =  new Pop({'prefix':'newtest_',title:'标题',content:'内容在这里！',width:200});
-                      pop.setTitle("这是新标题");
-                      pop.render();
+					var renderbefore = function(){
+						//alert(2342423)
+					}
+					var renderafter = function(){
+						//alert(1111)
+					}
+
+					var pop = new Pop({'title': '百度金融 - 温馨提示','content': '','width': 572,'callback':{renderbefore:renderbefore,renderafter:renderafter}});
+
+                   //pop.setTitle("这是新标题");
+                    pop.render();
+                    //pop.setContent("这是新内容");
+                    pop.show();
 				});
-	
+
 				// $(".lhz-data-show").html(loadDate(opts));
 
 				// if (opts.config.ifEdit) {
