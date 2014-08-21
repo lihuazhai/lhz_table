@@ -1,0 +1,45 @@
+﻿/**
+ * dialog样式
+ * @authors yangxiaoxu
+ * @date    2013-09-11 
+ * @version 1.0
+ */
+.ui-dialog {
+    width: 520px;
+    padding: 5px;
+    background: url('layer-bg.png') repeat;
+}
+
+.ui-dialog .hd {
+    height: 46px;
+    line-height: 46px;
+    border-bottom: 1px solid #ddd;
+    background: #eee;
+}
+
+.ui-dialog .hd .title {
+    padding-left: 15px;
+    font-family: 'Microsoft YaHei';
+    color: #333;
+    font-size: 16px;
+}
+
+.ui-dialog .hd .close {
+    float: right;
+    width: 12px;
+    height: 12px;
+    margin: 15px 15px 0 0;
+    background: url('close.png?__sprite') no-repeat;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.ui-dialog .bd {
+    background: #fff;
+}
+
+.ui-dialog .bd .buttons {
+    height: 37px;
+    line-height: 37px;
+    margin: 0 0 30px 78px;
+}

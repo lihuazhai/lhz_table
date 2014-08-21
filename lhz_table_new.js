@@ -51,7 +51,7 @@
 					page.init(pageMsg);
 				});
 
-				require(['../src/popup.js'], function(Pop) {
+				require(['../src/popup/popup.js'], function(Pop) {
 					var renderbefore = function(){
 						//alert(2342423)
 					}
@@ -59,12 +59,12 @@
 						//alert(1111)
 					}
 
-					var pop = new Pop({'title': '百度金融 - 温馨提示','content': '','width': 572,'callback':{renderbefore:renderbefore,renderafter:renderafter}});
+					var pop = new Pop({'title': '梨花寨 - 温馨提示','content': '','width': 572,'callback':{renderbefore:renderbefore,renderafter:renderafter}});
 
                    //pop.setTitle("这是新标题");
                     pop.render();
                     //pop.setContent("这是新内容");
-                    pop.show();
+                    //pop.show();
 				});
 
 				// $(".lhz-data-show").html(loadDate(opts));

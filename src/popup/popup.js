@@ -35,7 +35,7 @@ define(
 			'DIALOGTPL': [
 				'<div class="{%prefix%}dialog">',
 				'<div class="bd">',
-				'<div class="content">ddddd</div>',
+				'<div class="content">内容载入中！</div>',
 				'</div>',
 				'</div>'
 			].join(''),
@@ -74,6 +74,36 @@ define(
 			return data ? func(data) : func;
 		};
 
+		util.trigger = function(event, options) {
+
+			util.isString(event) && (event = new util.Event(event));
+
+			!this.__listeners && (this.__listeners = {});
+
+			// 将 options extend到event中去传递
+			options = options || {};
+			for (var i in options) {
+				event[i] = options[i];
+			}
+
+			var i, n, me = this,
+				t = me.__listeners,
+				p = event.type;
+			event.target = event.target || (event.currentTarget = me);
+
+			// 支持非 on 开头的事件名
+			p.indexOf("on") && (p = "on" + p);
+
+			typeof me[p] == "function" && me[p].apply(me, arguments);
+
+			if (typeof t[p] == "object") {
+				for (i = 0, n = t[p].length; i < n; i++) {
+					t[p][i] && t[p][i].apply(me, arguments);
+				}
+			}
+			return event.returnValue;
+		};
+
 		//回调执行
 		var callbackExecute = function(fun) {
 			if (fun && (fun instanceof Function)) {
@@ -102,7 +132,8 @@ define(
 
 			that.setStyle();
 
-			callbackExecute(that.callback.renderafter);
+			that.trigger('renderafter');
+			//callbackExecute(that.callback.renderafter);
 		}
 
 		var dialogFuns = {
@@ -210,6 +241,44 @@ define(
 					})()
 				});
 			},
+			// 绑定交互行为
+			_action: function() {
+				var that = this;
+
+				that.bind('renderafter', function() {
+
+					that.dialog.delegate('[data-type="apply"]', 'click', function() {
+						// 绑定apply按钮点击事件
+						that.trigger('apply');
+					}).delegate('[data-type="cancel"]', 'click', function() {
+						// 绑定cancel按钮点击事件
+						that.trigger('cancel');
+					}).delegate('[data-type="close"]', 'click', function() {
+						// 绑定close按钮点击事件
+						that.trigger('close');
+					});
+
+					$(window).bind('resize', function() {
+						// 组件显示的时候，才触发样式的改变
+						that.isShown && that.setCenter();
+
+						// 如果组件销毁了，则清掉函数自身事件
+						that.isDestroyed && $(window).unbind('resize', arguments.callee);
+					});
+
+					// IE6遮罩需要随window scrollbar而滑动
+					that.withModal && isIE6 && $(window).bind('scroll', function() {
+						// 组件显示的时候，才触发样式的改变
+						that.isShown && that.modal.css({
+							'top': document.documentElement.scrollTop,
+							'left': document.documentElement.scrollLeft
+						});
+
+						// 如果组件销毁了，则清掉函数自身事件
+						that.isDestroyed && $(window).unbind('scroll', arguments.callee);
+					});
+				});
+			},
 			// 渲染到dom中
 			render: function() {
 				render(this);
@@ -223,7 +292,7 @@ define(
 		//定义类
 		function Popup(options) {
 			this.options = $.extend({
-				prefix: "ui_"
+				prefix: "ui-"
 			}, options);
 			this.withModal = true;
 			this.title = options.title || "这里是标题";
